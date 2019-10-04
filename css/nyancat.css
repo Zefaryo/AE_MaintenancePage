@@ -19,6 +19,19 @@ audio {
   height: 33px;
 }
 
+#meme{
+  margin-left: 50px;
+  width: 350px;
+  height: auto;
+}
+
+#gif{
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 30px;
+  z-index: 999;
+}
+
 .rainbow {
   position: absolute;
   width: 9px;
