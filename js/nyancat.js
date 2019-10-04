@@ -62,8 +62,8 @@ function createStar() {
 function moveNyan() {
   let tamX = nyan.width() / 2,
     tamY = nyan.height() / 2;
-  px += (posX - px - tamX) / 50;
-  py += (posY - py - tamY) / 50;
+  px += (posX - px - tamX) / 30;
+  py += (posY - py - tamY) / 30;
 
   nyan.css({
     left: px + 'px',
