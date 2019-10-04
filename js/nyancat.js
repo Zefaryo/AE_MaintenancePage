@@ -1,35 +1,31 @@
-var posX = 100,
+let posX = 100,
   posY = 100,
   px = 0,
   py = 0,
   an = false;
-var nyan = $('.nyan');
-var height = 800;
-var width = parseInt($('body').width());
-let rainbowArray = [];
+let nyan = $('.nyan');
+let height = +$('body').height();
+let width = +$('body').width();
+let rainbowArray = []; // actual array
+let rainbow; // jQuery array (dunno why there are two)
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-$(document).on('mousemove', function(event) {
-  posX = event.pageX;
-  posY = event.pageY;
-});
-
-for (var i = 0; i < parseInt(width / 9); i++) {
-  var rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
+for (let i = 0; i < Math.floor(width / 9); i++) {
+  let rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
   rainbowArray.push(rainbowElement);
   $('#nyan-trail').append(rainbowElement);
 }
 
-const rainbow = $('.rainbow');
+rainbow = $('.rainbow');
 
 function createStar() {
-  var rand = getRandomInt(3, 14);
-  var starSpeed = getRandomInt(5, 10);
+  let rand = getRandomInt(3, 14);
+  let starSpeed = getRandomInt(5, 10);
 
-  var star = $('<div class="star"></div>').css({
+  let star = $('<div class="star"></div>').css({
     width: rand + 'px',
     height: rand + 'px',
     left: width - 10 + 'px',
@@ -52,7 +48,7 @@ function createStar() {
 }
 
 function moveNyan() {
-  var tamX = nyan.width() / 2,
+  let tamX = nyan.width() / 2,
     tamY = nyan.height() / 2;
   px += (posX - px - tamX) / 50;
   py += (posY - py - tamY) / 50;
@@ -64,15 +60,15 @@ function moveNyan() {
 }
 
 function updateRainbow() {
-  var nParts = Math.floor(nyan.position().left / 9 + 1.8); // 1.8 is a totally arbitrary number
+  let nParts = Math.floor(nyan.position().left / 9 + 2.8); // 2.8 is a totally arbitrary number
 
   if (rainbowArray.length >= nParts) rainbowArray.pop();
 
   rainbowArray.unshift(py);
   rainbow.hide();
 
-  for (var i = 0; i < nParts; i++) {
-    var am = (i % 2);
+  for (let i = 0; i < nParts; i++) {
+    let am = (i % 2);
     if (an) am = (i % 2) ? 0 : 1;
 
     rainbow.eq(nParts - i - 1).css({
@@ -81,10 +77,14 @@ function updateRainbow() {
   }
 }
 
-window.setInterval(function() {
+function update() {
   moveNyan();
   updateRainbow();
-}, 10);
+
+  requestAnimationFrame(update);
+}
+
+requestAnimationFrame(update);
 
 window.setInterval(function() {
   createStar();
@@ -93,3 +93,31 @@ window.setInterval(function() {
 window.setInterval(function() {
   an = !an;
 }, 500);
+
+document.addEventListener('mousemove', function(event) {
+  posX = event.pageX;
+  posY = event.pageY;
+});
+
+window.addEventListener('resize', (event) => {
+  let newWidth = +$('body').width();
+
+  if (newWidth > width) {
+    for (let i = Math.floor(width / 9); i < Math.floor(newWidth / 9); i++) {
+      let rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
+      rainbowArray.push(rainbowElement);
+      $('#nyan-trail').append(rainbowElement);
+    }
+  } else if (newWidth < width) {
+    for (let i = Math.floor(newWidth / 9) + 1; i < Math.floor(width / 9); i++) {
+      let rainbowElement = rainbow.eq(i);
+      rainbowElement.remove(); // goodbye :(
+      rainbowArray.pop();
+    }
+  }
+
+  height = +$('body').height();
+  width = newWidth;
+
+  rainbow = $('.rainbow');
+});
