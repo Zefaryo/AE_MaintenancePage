@@ -4,11 +4,9 @@ var posX = 100,
   py = 0,
   an = false;
 var nyan = $('.nyan');
-var rainbow = null;
 var height = 800;
 var width = parseInt($('body').width());
-var ScreenSize = parseInt(width / 9);
-var pilha = [];
+let rainbowArray = [];
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -17,36 +15,40 @@ function getRandomInt(min, max) {
 $(document).on('mousemove', function(event) {
   posX = event.pageX;
   posY = event.pageY;
-})
+});
 
-for (var i = 0; i < ScreenSize; i++) {
-  var rainbow_wave = $('<div class="rainbow"/>').css('left', i * 9 + 'px');
-  $('#nyan-trail').append(rainbow_wave);
+for (var i = 0; i < parseInt(width / 9); i++) {
+  var rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
+  rainbowArray.push(rainbowElement);
+  $('#nyan-trail').append(rainbowElement);
 }
-rainbow = $('.rainbow');
 
-function criarEstrela() {
+const rainbow = $('.rainbow');
+
+function createStar() {
   var rand = getRandomInt(3, 14);
-  var tempoDeVida = getRandomInt(5, 10);
-  var star = $('<div class="star"/>').css({
+  var starSpeed = getRandomInt(5, 10);
+
+  var star = $('<div class="star"></div>').css({
     width: rand + 'px',
     height: rand + 'px',
     left: width - 10 + 'px',
-    top: Math.floor((Math.random() * height) + 1),
-    'transition': 'all ' + tempoDeVida + 's linear',
-    'transform': 'translate(0px, 0px)'
+    top: getRandomInt(1, height),
+    transition: `all ${starSpeed}s linear`,
+    transform: 'translate(0px, 0px)'
   });
-  $('body').append(star);
+
+  $('#stars').append(star);
 
   window.setTimeout(function() {
     star.css({
-      'transform': 'translate(-' + width + 'px, 0px)'
+      transform: `translate(${-width}px, 0px)`
     });
   }, getRandomInt(5, 10) * 10);
 
   window.setTimeout(function() {
     star.remove();
-  }, tempoDeVida * 1000);
+  }, starSpeed * 1000);
 }
 
 function moveNyan() {
@@ -61,31 +63,31 @@ function moveNyan() {
   });
 }
 
-function peidaArcoIris() {
-  var qnt = Math.floor(nyan.position().left / 9) + 1;
+function updateRainbow() {
+  var nParts = Math.floor(nyan.position().left / 9 + 1.8); // 1.8 is a totally arbitrary number
 
-  if (pilha.length >= qnt) pilha.pop();
+  if (rainbowArray.length >= nParts) rainbowArray.pop();
 
-  pilha.unshift(py);
-
+  rainbowArray.unshift(py);
   rainbow.hide();
-  for (var i = 0; i < qnt; i++) {
+
+  for (var i = 0; i < nParts; i++) {
     var am = (i % 2);
     if (an) am = (i % 2) ? 0 : 1;
 
-    rainbow.eq(qnt - i - 1).css({
-      top: pilha[i] + am
+    rainbow.eq(nParts - i - 1).css({
+      top: rainbowArray[i] + am
     }).show();
   }
 }
 
 window.setInterval(function() {
   moveNyan();
-  peidaArcoIris();
+  updateRainbow();
 }, 10);
 
 window.setInterval(function() {
-  criarEstrela();
+  createStar();
 }, 300);
 
 window.setInterval(function() {
