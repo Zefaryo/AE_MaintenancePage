@@ -24,6 +24,15 @@ for (let i = 0; i < Math.floor(width / rainbowWidth); i++) {
 
 rainbow = $('.rainbow');
 
+let memeNumber = getRandomInt(1, 12);
+
+let meme = $(`<img src="pics/Meme${memeNumber}.png" alt="Meme #${memeNumber}" id="meme" />`);
+if (width < 990) { // put meme in a fixed place
+  $("#meme-mobile").append(meme);
+} else { // make the meme follow the mouse
+  $("#meme-desktop").append(meme);
+}
+
 function createStar() {
   let rand = getRandomInt(3, 14);
   let starSpeed = getRandomInt(5, 10);
