@@ -17,24 +17,18 @@ body {
 }
 
 @-webkit-keyframes color_change {
-	from { color: white; }
-	to { color: red; }
+  from { color: white; }
+  to { color: red; }
 }
-@-moz-keyframes color_change {
-	from { color: white; }
-	to { color: red; }
-}
-@-ms-keyframes color_change {
-	from { color: white; }
-	to { color: red; }
-}
+
 @-o-keyframes color_change {
-	from { color: white; }
-	to { color: red; }
+  from { color: white; }
+  to { color: red; }
 }
+
 @keyframes color_change {
-	from { color: white; }
-	to { color: red; }
+  from { color: white; }
+  to { color: red; }
 }
 
 p{
