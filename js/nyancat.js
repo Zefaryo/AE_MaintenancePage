@@ -16,7 +16,7 @@ $(document).on('mousemove', function( event ) {
 for(var i = 0; i < ScreenSize; i++)
 {
   var rainbow_wave = $('<div class="rainbow"/>').css('left', i*9+'px');
-  $('body').append(rainbow_wave);
+  $('#nyan-trail').append(rainbow_wave);
 }
 rainbow = $('.rainbow');
 
@@ -27,18 +27,18 @@ function criarEstrela()
     var star = $('<div class="star"/>').css({
       width:rand+'px',
       height:rand+'px',
-      left: width-10+'px', 
-      top: Math.floor((Math.random()*height)+1), 
+      left: width-10+'px',
+      top: Math.floor((Math.random()*height)+1),
       'transition': 'all '+tempoDeVida+'s linear',
       'transform': 'translate(0px, 0px)'
     });
     $('body').append(star);
-    
+
     window.setTimeout(function(){
       star.css({
         'transform': 'translate(-'+width+'px, 0px)'
       });
-    }, getRandomInt(5,10)*10);  
+    }, getRandomInt(5,10)*10);
 
   window.setTimeout(function(){star.remove();}, tempoDeVida*1000);
 }
@@ -49,7 +49,7 @@ function moveNyan()
       tamY = nyan.height()/2;
     px += (posX - px - tamX) / 50;
     py += (posY - py - tamY) / 50;
- 
+
     nyan.css({
       left: px + 'px',
       top: py + 'px'
@@ -57,19 +57,19 @@ function moveNyan()
 }
 function peidaArcoIris()
 {
-  var qnt = Math.floor(nyan.position().left/9)+2;
+  var qnt = Math.floor(nyan.position().left/9)+1;
 
   if(pilha.length >= qnt) pilha.pop();
-  
+
   pilha.unshift(py);
-  
+
   rainbow.hide();
   for(var i = 0; i < qnt; i++)
   {
     var am = (i%2);
     if(an) am = (i%2) ? 0 : 1 ;
-    
-    rainbow.eq(qnt-i).css({top: pilha[i]+am}).show();
+
+    rainbow.eq(qnt - i - 1).css({top: pilha[i]+am}).show();
   }
 }
 
