@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Orbitron";
+  font-style: normal;
+  font-weight: 400;
+  src: url("font/Blok.ttf");
+}
+
 body {
   background: url(https://media.giphy.com/media/2fC74jNn5SPvO/giphy.gif) no-repeat center center fixed;
   background-size: cover;
@@ -30,6 +37,16 @@ audio {
   margin-top: 30px;
   margin-left: 30px;
   z-index: 999;
+}
+
+#text{
+  position: absolute;
+  z-index: 998;
+  left: 30px;
+  top:170px;
+  font-family: "Orbitron", Comic Sans MS, sans-serif;
+  font-weight: bold;
+  font-size: 16pt;
 }
 
 .rainbow {
