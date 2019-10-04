@@ -4,17 +4,20 @@ let posX = 100,
   py = 0,
   an = false;
 let nyan = $('.nyan');
+let nyanScale = 2;
 let height = +$('body').height();
 let width = +$('body').width();
 let rainbowArray = []; // actual array
 let rainbow; // jQuery array (dunno why there are two)
 
+const rainbowWidth = 9 * nyanScale;
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-for (let i = 0; i < Math.floor(width / 9); i++) {
-  let rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
+for (let i = 0; i < Math.floor(width / rainbowWidth); i++) {
+  let rainbowElement = $('<div class="rainbow"></div>').css('left', i * rainbowWidth + 'px');
   rainbowArray.push(rainbowElement);
   $('#nyan-trail').append(rainbowElement);
 }
@@ -26,8 +29,8 @@ function createStar() {
   let starSpeed = getRandomInt(5, 10);
 
   let star = $('<div class="star"></div>').css({
-    width: rand + 'px',
-    height: rand + 'px',
+    width: rand * nyanScale + 'px',
+    height: rand * nyanScale + 'px',
     left: width - 10 + 'px',
     top: getRandomInt(1, height),
     transition: `all ${starSpeed}s linear`,
@@ -60,7 +63,7 @@ function moveNyan() {
 }
 
 function updateRainbow() {
-  let nParts = Math.floor(nyan.position().left / 9 + 2.8); // 2.8 is a totally arbitrary number
+  let nParts = Math.floor(nyan.position().left / rainbowWidth) + 2;
 
   if (rainbowArray.length >= nParts) rainbowArray.pop();
 
@@ -103,13 +106,13 @@ window.addEventListener('resize', (event) => {
   let newWidth = +$('body').width();
 
   if (newWidth > width) {
-    for (let i = Math.floor(width / 9); i < Math.floor(newWidth / 9); i++) {
-      let rainbowElement = $('<div class="rainbow"></div>').css('left', i * 9 + 'px');
+    for (let i = Math.floor(width / rainbowWidth); i < Math.floor(newWidth / rainbowWidth); i++) {
+      let rainbowElement = $('<div class="rainbow"></div>').css('left', i * rainbowWidth + 'px');
       rainbowArray.push(rainbowElement);
       $('#nyan-trail').append(rainbowElement);
     }
   } else if (newWidth < width) {
-    for (let i = Math.floor(newWidth / 9) + 1; i < Math.floor(width / 9); i++) {
+    for (let i = Math.floor(newWidth / rainbowWidth) + 1; i < Math.floor(width / rainbowWidth); i++) {
       let rainbowElement = rainbow.eq(i);
       rainbowElement.remove(); // goodbye :(
       rainbowArray.pop();
